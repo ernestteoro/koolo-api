@@ -2,7 +2,7 @@
 const MongoClient = require('mongodb').MongoClient;
 //const dbUri = "mongodb+srv://eservice:admin@mongodb+srv://cluster0-jotbb.mongodb.net/test?retryWrites=true&w=majority";
 
-const dbUri ='mongodb+srv://eservice:admin@cluster0-jotbb.mongodb.net/test?retryWrites=true&w=majority';
+const dbUri ='mongodb+srv://eservice:admin@cluster0-jotbb.mongodb.net/eservice?retryWrites=true&w=majority';
 
 function initialize(dbName,collectionName,successCallback,failureCallback){
     MongoClient.connect(dbUri,function(err,dbInstance){

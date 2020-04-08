@@ -30,6 +30,12 @@ mongo.connect('mongodb://localhost/eservice',{
 });
 */
 
+mongo.connect('mongodb+srv://eservice:admin@cluster0-jotbb.mongodb.net/eservice?retryWrites=true&w=majority',{
+    useNewUrlParser:true,
+    useUnifiedTopology: true,
+    useFindAndModify: false,
+    useCreateIndex: true
+});
 
 
 app.disable('etag');

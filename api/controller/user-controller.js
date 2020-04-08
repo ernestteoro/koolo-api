@@ -4,92 +4,84 @@ const UserModel = require('../model/user');
 const PersonModel = require('../model/person')
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const db = require('../midleware/db')
-const ObjectId = require("mongodb").ObjectID;
+//const db = require('../midleware/db')
+//const ObjectId = require("mongodb").ObjectID;
 
-const dbName ="eservice"
-const collectionName ="users"
+//const dbName ="eservice"
+//const collectionName ="users"
 
 
 // get all users
 exports.get_user = (req, res, next) => {
     const userId = req.params._id;
-    if (userId) {
-        db.initialize(dbName,collectionName,
-            function(dbCollection){
 
-                dbCollection.findOne({ _id:new ObjectId(userId)},{ _id : 1, firstName: 1, lastName: 1, address: 1, zipcode: 1, gender: 1, },(err, user)=>{
-                    if(err) {
-                        return response.status(404).json({
-                            message: error.message
+            /*
+            db.initialize(dbName,collectionName,
+                function(dbCollection){
+                    if(userId){
+                        dbCollection.findOne({ _id:new ObjectId(userId)},{ _id : 1, firstName: 1, lastName: 1, address: 1, zipcode: 1, gender: 1, },(err, user)=>{
+                            if(err) {
+                                return response.status(404).json({
+                                    message: error.message
+                                });
+                            }
+                            return res.status(200).json({
+                                user
+                            });
+                        });
+                    }else{
+                        dbCollection.find({},{ _id : 1, firstName: 1, lastName: 1, address: 1, zipcode: 1, gender: 1, }).toArray((error, users) => {
+                            if(error) {
+                                return response.status(404).json({
+                                    message: error.message
+                                });
+                            }
+                            return res.status(200).json({
+                                users
+                            });
                         });
                     }
-                    return res.status(200).json({
-                        user
+                },
+                function(err){
+                    return res.status(404).json({
+                        message: err.message
                     });
-                });
-            },
-            function(err){
-                return res.status(404).json({
-                    message: err.message
-                });
-            }
-        );
-
-        /*
-        PersonModel.findById(userId).select('_id firstName lastName address zipcode gender').populate('user','email istasker isLogin').then(user => {
-            return res.status(200).json({
-                user
-            });
-        }).catch(err => {
-            return res.status(404).json({
-                message: 'No user data found'
-            });
-        });
-        */
-
-    } else {
-        db.initialize(dbName,collectionName,
-            function(dbCollection){
-                dbCollection.find({},{ _id : 1, firstName: 1, lastName: 1, address: 1, zipcode: 1, gender: 1, }).toArray((error, users) => {
-                    if(error) {
-                        return response.status(404).json({
-                            message: error.message
-                        });
-                    }
-                    return res.status(200).json({
-                        users
-                    });
-                });
-            },
-            function(err){
-                return res.status(404).json({
-                    message: err.message
-                });
-            }
-        );
-        /*
-        PersonModel.find().select('_id firstName lastName address zipcode gender').populate('user','email istasker isLogin').then(users => {
-            if (users) {
-                const response = {
-                    count: users.length,
-                    users: users
                 }
+            );
+            */
+
+        if (userId) {
+            PersonModel.findById(userId).select('_id firstName lastName address zipcode gender').populate('user','email istasker isLogin').then(user => {
                 return res.status(200).json({
-                    response
+                    user
                 });
-            } else {
+            }).catch(err => {
                 return res.status(404).json({
                     message: 'No user data found'
                 });
-            }
-        }).catch(err => {
-            return res.status(404).json({
-                message: err.message
             });
-        });
-        */
-    }
+        } else {
+            PersonModel.find().select('_id firstName lastName address zipcode gender').populate('user','email istasker isLogin').then(users => {
+                if (users) {
+                    const response = {
+                        count: users.length,
+                        users: users
+                    }
+                    return res.status(200).json({
+                        response
+                    });
+                } else {
+                    return res.status(404).json({
+                        message: 'No user data found'
+                    });
+                }
+            }).catch(err => {
+                return res.status(404).json({
+                    message: err.message
+                });
+            });
+            
+        }
 }
 
 // method to signup a user
@@ -191,6 +183,7 @@ exports.create_user = (userData) => {
 // add user
 exports.add_user = (req, res, next) => {
 
+    /*
     db.initialize(dbName,collectionName,
         function(dbCollection){
 
@@ -246,9 +239,10 @@ exports.add_user = (req, res, next) => {
             });
         }
     );
+    */
 
 
-    /*
+    
     UserModel.findOne({
         email: req.body.email
     }).exec().then(user => {
@@ -295,7 +289,7 @@ exports.add_user = (req, res, next) => {
             });
         }
     });
-    */
+    
 }
 
 // delete user
@@ -306,6 +300,7 @@ exports.delete_user = (req, res, next) => {
 // User login
 exports.login = (req, res, next) => {
 
+    /*
     db.initialize(dbName,collectionName,
         function(dbCollection){
             dbCollection.findOne({ email: req.body.email},(err, user)=>{
@@ -353,9 +348,9 @@ exports.login = (req, res, next) => {
             });
         }
     );
+    */
 
-
-    /*
+    
     UserModel.findOne({
         email: req.body.email
     }).then(user => {
@@ -397,5 +392,5 @@ exports.login = (req, res, next) => {
             message: "Not authorized"
         });
     })
-    */
+    
 }

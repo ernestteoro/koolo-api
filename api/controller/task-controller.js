@@ -59,7 +59,8 @@ exports.get_task = (req, res, next) => {
             }
         });
     } else {
-        TaskModel.find().populate("owner","_id firstName lastName email address gender istasker ").
+        TaskModel.find().
+        populate("owner","_id firstName lastName email address gender istasker ").
         populate("tasker","_id firstName lastName email address gender istasker ").
         populate("service","_id name description ").
         exec(function(err,tasks){

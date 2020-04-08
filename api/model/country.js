@@ -17,4 +17,4 @@ const countrySchema = mongoose.Schema({
 });
 
 
-module.exports=mongoose.model('Countries',countrySchema);
+module.exports=mongoose.model('countries',countrySchema);
