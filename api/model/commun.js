@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 
+
 const communSchema = mongoose.Schema({
     _id:mongoose.Schema.Types.ObjectId,
     name:{

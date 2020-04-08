@@ -22,12 +22,14 @@ const paymentRoute = require('./api/route/payment-route')
 
 const app = express();
 
-// connecting to the databases
+/*
 mongo.connect('mongodb://localhost/eservice',{
     useNewUrlParser:true,
     useUnifiedTopology:true,
     useCreateIndex:true
 });
+*/
+
 
 
 app.disable('etag');
