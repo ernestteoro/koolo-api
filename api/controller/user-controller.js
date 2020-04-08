@@ -51,7 +51,7 @@ exports.get_user = (req, res, next) => {
             */
 
         if (userId) {
-            PersonModel.findById(userId).select('_id firstName lastName address zipcode gender').populate('user','email istasker isLogin').then(user => {
+            UserModel.findById(userId).select('_id firstName lastName email address zipcode gender istasker isLogin role').then(user => {
                 return res.status(200).json({
                     user
                 });
@@ -61,7 +61,7 @@ exports.get_user = (req, res, next) => {
                 });
             });
         } else {
-            PersonModel.find().select('_id firstName lastName address zipcode gender').populate('user','email istasker isLogin').then(users => {
+            UserModel.find().select('_id firstName lastName address email zipcode gender istasker isLogin role').then(users => {
                 if (users) {
                     const response = {
                         count: users.length,
