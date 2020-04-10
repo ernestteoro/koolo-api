@@ -1,25 +1,27 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose')
 
-
-const communSchema = mongoose.Schema({
+const subCategorySchema= mongoose.Schema({
     _id:mongoose.Schema.Types.ObjectId,
     name:{
         type:String,
         require:true
     },
     description:{
-        type:String
+        type:String,
+        require:true
     },
     created:{
         type:Date,
+        require:true,
         default:Date.now()
     },
-    country:{
+    category:{
         type:mongoose.Schema.Types.ObjectId,
-        ref:'Country',
+        ref:'Category',
         require:true
     }
+    
 });
 
 
-module.exports=mongoose.model('Communs',communSchema);
+module.exports = mongoose.model('Subcategory',subCategorySchema)

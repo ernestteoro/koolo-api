@@ -1,14 +1,14 @@
 const mongoose = require('mongoose');
-const CategoryModel = require('../model/category');
+const SubCategory = require('../model/subCategory');
 
 
-// function to get all categorys
-exports.get_all_categories =(req,res,next)=>{
+// function to get all subcategorys
+exports.get_all_subcategories =(req,res,next)=>{
     const cat_id = req.params._id;
     if(cat_id){
-        CategoryModel.findById(cat_id).select('name description created').exec().then(category=>{
+        SubCategory.findById(cat_id).select('name description created').exec().then(subcategories=>{
             return res.status(200).json({
-                category
+                subcategories
             });
         }).catch(err=>{
             return res.status(404).json({
@@ -16,10 +16,10 @@ exports.get_all_categories =(req,res,next)=>{
             });
         });
     }else{
-        CategoryModel.find().select('name description created').exec().then(categories=>{
+        SubCategory.find().select('name description created').exec().then(subcategories=>{
             return res.status(200).json({
-                count:categories.length,
-                categories:categories
+                count:subcategories.length,
+                subcategories:subcategories
             });
         }).catch(err=>{
             return res.status(404).json({
@@ -29,21 +29,21 @@ exports.get_all_categories =(req,res,next)=>{
     }
 }
 
-// function to add an category
-exports.add_category =(req,res,next)=>{
-    const category = new CategoryModel({
+// function to add an subcategory
+exports.add_subcategory =(req,res,next)=>{
+    const subcategory = new SubCategory({
         _id: new mongoose.Types.ObjectId(),
         name:req.body.name,
         description:req.body.description
     });
-    category.save().then(category=>{
+    subcategory.save().then(subcategory=>{
         res.status(200).json({
-            country:savedcountry,
+            country:subcategory,
             request:{
                 type:'GET',
-                url:req.url+'/'+savedcountry._id
+                url:req.url+'/'+subcategory._id
             }
-        })
+        });
     }).catch(err=>{
         res.status(500).json({
             message:err.message
@@ -52,14 +52,14 @@ exports.add_category =(req,res,next)=>{
 }
 
 
-// function to delete an category
-exports.delete_category =(req,res,next)=>{
+// function to delete an subcategory
+exports.delete_subcategory =(req,res,next)=>{
     const _idCat = req.params._id;
     if(_idCat){
-        CategoryModel.deleteOne({_id:_idCat}).then(category=>{
+        SubCategory.deleteOne({_id:_idCat}).then(subcategory=>{
             return res.status(200).json({
                 message:'Category deleted with success',
-                category: category
+                subcategory: subcategory
             });
         }).catch(error=>{
             return res.status(404).json({
@@ -74,19 +74,19 @@ exports.delete_category =(req,res,next)=>{
 }
 
 
-// function to update an category
-exports.update_category =(req,res,next)=>{
+// function to update an subcategory
+exports.update_subcategory =(req,res,next)=>{
     if(req.body){
-        const category = new CategoryModel({
+        const subcategory = new SubCategory({
             name:req.body.name,
             description:req.body.description
         });
-        category.update({_id:req.body._id}).then(category=>{
+        subcategory.update({_id:req.body._id}).then(subcategory=>{
             res.status(200).json({
-                country:savedcountry,
+                country:subcategory,
                 request:{
                     type:'GET',
-                    url:req.url+'/'+savedcountry._id
+                    url:req.url+'/'+subcategory._id
                 }
             });
         }).catch(err=>{
@@ -100,3 +100,4 @@ exports.update_category =(req,res,next)=>{
         });
     } 
 }
+

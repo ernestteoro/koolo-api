@@ -124,11 +124,7 @@ exports.update_task=(req, res, next)=>{
     TaskModel.update({_id:_id},task).then(updatedtask=>{
         task._id=_id;
         res.status(200).json({
-            task:task,
-            request:{
-                type:'GET',
-                url:'http://localhost:8080/tasks/'+task._id
-            }
+            task:task
         })
     }).catch(err=>{
         res.status(500).json({

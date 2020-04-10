@@ -15,6 +15,11 @@ const serviceSchema = mongoose.Schema({
         require:true,
         default:Date.now()
     },
+    subcategory:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'Subcategory',
+        require:true
+    },
     createdby:{
         type:mongoose.Schema.Types.ObjectId,
         ref:'User',

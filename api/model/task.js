@@ -36,7 +36,7 @@ const taskSchema = mongoose.Schema({
     },
     equipement:{
         type:mongoose.Schema.Types.ObjectId,
-        ref:'Equipement'
+        ref:'Equipment'
     },
     description:{
         type:String,
@@ -50,4 +50,4 @@ const taskSchema = mongoose.Schema({
 });
 
 
-module.exports= mongoose.model('tasks',taskSchema);
+module.exports= mongoose.model('Task',taskSchema);

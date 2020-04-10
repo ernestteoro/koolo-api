@@ -1,16 +1,8 @@
 const mongoose = require('mongoose');
 
-const programSchema = mongoose.Schema({
+const categorySchema= mongoose.Schema({
     _id:mongoose.Schema.Types.ObjectId,
-    tasker:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:'User',
-        require:true
-    },
-    day:{
-        type:String,
-    },
-    time:{
+    name:{
         type:String,
         require:true
     },
@@ -23,7 +15,7 @@ const programSchema = mongoose.Schema({
         require:true,
         default:Date.now()
     }
-
 });
 
-module.exports= mongoose.model('programs',programSchema);
+
+module.exports= mongoose.model("Category",categorySchema);

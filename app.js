@@ -17,7 +17,9 @@ const paymentMethodRoute = require('./api/route/payment-method-route');
 const reviewRoute = require('./api/route/review-route');
 const provideRoute = require('./api/route/provide-route');
 const programRoute = require('./api/route/program-route');
-const paymentRoute = require('./api/route/payment-route')
+const paymentRoute = require('./api/route/payment-route');
+const categoryRoute = require('./api/route/category-route');
+const subCategoryRoute = require('./api/route/subCategory-route');
 
 
 const app = express();
@@ -29,13 +31,13 @@ mongo.connect('mongodb://localhost/eservice',{
     useCreateIndex:true
 });
 */
-
 mongo.connect('mongodb+srv://eservice:admin@cluster0-jotbb.mongodb.net/eservice?retryWrites=true&w=majority',{
     useNewUrlParser:true,
     useUnifiedTopology: true,
     useFindAndModify: false,
     useCreateIndex: true
 });
+
 
 
 app.disable('etag');
@@ -71,7 +73,8 @@ app.use("/koolo/v-1/paymentMethods",paymentMethodRoute);
 app.use("/koolo/v-1/equipments",equipmentRoute);
 app.use("/koolo/v-1/programs",programRoute);
 app.use("/koolo/v-1/payments",paymentRoute);
-
+app.use("/koolo/v-1/categories",categoryRoute);
+app.use("/koolo/v-1/subcategories",subCategoryRoute);
 
 
 // Error to be returned in case any happens
@@ -81,6 +84,7 @@ app.use((req,res,next)=>{
     next(error);
 });
 
+// Error to be returned in case anything happens
 app.use((req,res,next)=>{
     res.status(error.status || 500);
     res.json({
@@ -89,6 +93,5 @@ app.use((req,res,next)=>{
         }
     });
 });
-
 
 module.exports = app;
