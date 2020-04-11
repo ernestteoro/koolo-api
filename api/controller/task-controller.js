@@ -31,6 +31,19 @@ exports.get_task_for_tasker =(req,res, next)=>{
     });
 }
 
+// method to get task for its owner
+exports.get_task_of_service =(req,res, next)=>{  
+    TaskModel.find({service:req.params._id }).select("_id name description created").exec(function(err,tasks){
+        if(err){
+            res.status(404).json({
+                message:err.message
+            });
+        }else{ 
+            res.status(200).json(tasks);
+        }
+    });
+}
+
 
 // get all tasks or one task using its id
 exports.get_task = (req, res, next) => {

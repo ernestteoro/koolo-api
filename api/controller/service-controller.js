@@ -32,6 +32,38 @@ exports.get_service = (req, res, next) => {
 }
 
 
+
+// get all services or one service using its id
+exports.get_service_of_subcategory = (req, res, next) => {
+    const subcategory_id = req.params._id;
+    if (subcategory_id) {
+        ServiceModel.find({subcategory:subcategory_id}).select('_id name description created').then(services => {
+            return res.status(200).json(services);
+        }).catch(err => {
+            console.log(err);
+            return res.status(404).json({
+                message: 'No user data found'
+            });
+        }); 
+    } else {
+        ServiceModel.find().select('_id name description created').then(services => {
+            if (services) {
+                return res.status(200).json(services);
+            } else {
+                return res.status(404).json({
+                    message: 'No user data found'
+                });
+            }
+        }).catch(err => {
+            console.log(err);
+            return res.status(404).json({
+                message: err.message
+            });
+        });
+    }
+}
+
+
 // Method to add a service
 exports.add_service=(req, res, next)=>{
     console.log("User id for creating a service "+req.userData.userId);
