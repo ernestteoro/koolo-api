@@ -7,6 +7,7 @@ const route = express.Router();
 
 route.get('/',serviceController.get_service);
 route.get('/:_id',serviceController.get_service);
+route.get('/subcategory/:_id',serviceController.get_service_of_subcategory);
 route.post('/',authCheck,serviceController.add_service);
 route.patch('/:_id',authCheck,serviceController.update_service);
 route.delete('/:_id',authCheck,serviceController.delete_service);
