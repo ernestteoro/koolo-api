@@ -10,10 +10,7 @@ exports.get_task_for_owner =(req,res, next)=>{
                 message:err.message
             });
         }else{ 
-            res.status(200).json({
-                count:tasks.length,
-                tasks:tasks
-            });
+            res.status(200).json(tasks);
         }
     });
 }
@@ -29,10 +26,7 @@ exports.get_task_for_tasker =(req,res, next)=>{
                 message:err.message
             });
         }else{ 
-            res.status(200).json({
-                count:tasks.length,
-                tasks:tasks
-            });
+            res.status(200).json(tasks);
         }
     });
 }
@@ -46,16 +40,13 @@ exports.get_task = (req, res, next) => {
         populate("owner","_id firstName lastName email address gender istasker ").
         populate("tasker","_id firstName lastName email address gender istasker ").
         populate("service","_id name description ").
-        exec(function(err,tasks){
+        exec(function(err,task){
             if(err){
                 res.status(404).json({
                     message:err.message
                 });
             }else{ 
-                res.status(200).json({
-                    count:tasks.length,
-                    tasks:tasks
-                });
+                res.status(200).json(task);
             }
         });
     } else {
@@ -69,10 +60,7 @@ exports.get_task = (req, res, next) => {
                     message:err.message
                 });
             }else{ 
-                res.status(200).json({
-                    count:tasks.length,
-                    tasks:tasks
-                });
+                res.status(200).json(tasks);
             }
         });
     }
@@ -123,9 +111,7 @@ exports.update_task=(req, res, next)=>{
     };
     TaskModel.update({_id:_id},task).then(updatedtask=>{
         task._id=_id;
-        res.status(200).json({
-            task:task
-        })
+        res.status(200).json(task)
     }).catch(err=>{
         res.status(500).json({
             message:err.message
@@ -137,9 +123,7 @@ exports.update_task=(req, res, next)=>{
 exports.delete_task=(req, res, next)=>{
     const _id = req.params._id;
     taskModel.deleteOne({_id:_id}).then(deletedtask=>{
-        res.status(200).json({
-            task:deletedtask,
-        })
+        res.status(200).json(deletedtask)
     }).catch(err=>{
         res.status(500).json({
             message:err.message

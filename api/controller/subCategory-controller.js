@@ -7,9 +7,7 @@ exports.get_all_subcategories =(req,res,next)=>{
     const cat_id = req.params._id;
     if(cat_id){
         SubCategory.findById(cat_id).select('name description created').exec().then(subcategories=>{
-            return res.status(200).json({
-                subcategories
-            });
+            return res.status(200).json(subcategories);
         }).catch(err=>{
             return res.status(404).json({
                 message:err.message
@@ -17,10 +15,7 @@ exports.get_all_subcategories =(req,res,next)=>{
         });
     }else{
         SubCategory.find().select('name description created').exec().then(subcategories=>{
-            return res.status(200).json({
-                count:subcategories.length,
-                subcategories:subcategories
-            });
+            return res.status(200).json(subcategories);
         }).catch(err=>{
             return res.status(404).json({
                 message:err.message
@@ -37,13 +32,7 @@ exports.add_subcategory =(req,res,next)=>{
         description:req.body.description
     });
     subcategory.save().then(subcategory=>{
-        res.status(200).json({
-            country:subcategory,
-            request:{
-                type:'GET',
-                url:req.url+'/'+subcategory._id
-            }
-        });
+        res.status(200).json(subcategory);
     }).catch(err=>{
         res.status(500).json({
             message:err.message
@@ -57,10 +46,7 @@ exports.delete_subcategory =(req,res,next)=>{
     const _idCat = req.params._id;
     if(_idCat){
         SubCategory.deleteOne({_id:_idCat}).then(subcategory=>{
-            return res.status(200).json({
-                message:'Category deleted with success',
-                subcategory: subcategory
-            });
+            return res.status(200).json(subcategory);
         }).catch(error=>{
             return res.status(404).json({
                 message:error.message
@@ -82,13 +68,7 @@ exports.update_subcategory =(req,res,next)=>{
             description:req.body.description
         });
         subcategory.update({_id:req.body._id}).then(subcategory=>{
-            res.status(200).json({
-                country:subcategory,
-                request:{
-                    type:'GET',
-                    url:req.url+'/'+subcategory._id
-                }
-            });
+            res.status(200).json(subcategory);
         }).catch(err=>{
             res.status(500).json({
                 message:err.message

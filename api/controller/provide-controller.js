@@ -9,16 +9,13 @@ exports.get_provide = (req, res, next) => {
         provideModel.find({_id:provideId}).
         populate("tasker","_id firstName lastName email address gender istasker ").
         populate("service","_id name description ").
-        exec(function(err,provides){
+        exec(function(err,provide){
             if(err){
                 res.status(404).json({
                     message:err.message
                 });
             }else{ 
-                res.status(200).json({
-                    count:provides.length,
-                    provides:provides
-                });
+                res.status(200).json(provide);
             }
         });
     } else {
@@ -31,10 +28,7 @@ exports.get_provide = (req, res, next) => {
                     message:err.message
                 });
             }else{ 
-                res.status(200).json({
-                    count:provides.length,
-                    tasks:provides
-                });
+                res.status(200).json(provides);
             }
         });
         
@@ -55,15 +49,12 @@ exports.get_provide_by_tasker = (req, res, next) => {
                     message:err.message
                 });
             }else{ 
-                res.status(200).json({
-                    count:provides.length,
-                    tasks:provides
-                });
+                res.status(200).json(provides);
             }
         });
     } else {
 
-        res.status(200).
+        res.status(404).
         json({
              message:"No provides data found"
             });
@@ -85,13 +76,7 @@ exports.add_provide=(req, res, next)=>{
 
     //Saving provides
     provide.save().then(savedprovide=>{
-        res.status(200).json({
-            provide:savedprovide,
-            request:{
-                type:'GET',
-                url:'http://localhost:8080/provides/'+savedprovide._id
-            }
-        })
+        res.status(200).json(savedprovide)
     }).catch(err=>{
         res.status(500).json({
             message:err.message
@@ -110,13 +95,7 @@ exports.update_provide=(req, res, next)=>{
         description:req.body.description
     };
     provideModel.update({_id:_id},provide).then(updatedprovide=>{
-        res.status(200).json({
-            provide:updatedprovide,
-            request:{
-                type:'GET',
-                url:'http://localhost:8080/provides/'+updatedprovide._id
-            }
-        })
+        res.status(200).json(updatedprovide)
     }).catch(err=>{
         res.status(500).json({
             message:err.message
@@ -128,9 +107,7 @@ exports.update_provide=(req, res, next)=>{
 exports.delete_provide=(req, res, next)=>{
     const _id = req.params._id;
     provideModel.deleteOne({_id:_id}).then(deletedprovide=>{
-        res.status(200).json({
-            provide:deletedprovide,
-        })
+        res.status(200).json(deletedprovide)
     }).catch(err=>{
         res.status(500).json({
             message:err.message

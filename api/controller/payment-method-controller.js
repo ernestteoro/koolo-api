@@ -10,13 +10,7 @@ exports.get_user_paymentMethods = (req,res, next)=>{
     populate('user','firstName lastName email istasker isLogin').
     then(paymentMethods => {
         if (paymentMethods) {
-            const response = {
-                count: paymentMethods.length,
-                paymentMethods: paymentMethods
-            }
-            return res.status(200).json({
-                response
-            });
+            return res.status(200).json(paymentMethods);
         } else {
             return res.status(404).json({
                 message: 'No user data found'
@@ -34,9 +28,7 @@ exports.get_paymentMethod = (req, res, next) => {
     const paymentMethodId = req.params._id;
     if (paymentMethodId) {
         PaymentMethodModel.findById(paymentMethodId).select('_id title telephone description created').populate('user','firstName lastName email istasker isLogin').then(paymentMethod => {
-            return res.status(200).json({
-                paymentMethod
-            });
+            return res.status(200).json(paymentMethod);
         }).catch(err => {
             return res.status(404).json({
                 message: 'No user data found'
@@ -45,13 +37,7 @@ exports.get_paymentMethod = (req, res, next) => {
     } else {
         PaymentMethodModel.find().select('_id title telephone description created').populate('user','firstName lastName email istasker isLogin').then(paymentMethods => {
             if (paymentMethods) {
-                const response = {
-                    count: paymentMethods.length,
-                    paymentMethods: paymentMethods
-                }
-                return res.status(200).json({
-                    response
-                });
+                return res.status(200).json(paymentMethods);
             } else {
                 return res.status(404).json({
                     message: 'No user data found'
@@ -91,13 +77,7 @@ exports.add_paymentMethod=(req, res, next)=>{
     }
 
     paymentMethod.save().then(savedpaymentMethod=>{
-        res.status(200).json({
-            paymentMethod:savedpaymentMethod,
-            request:{
-                type:'GET',
-                url:'http://localhost:8080/paymentMethods/'+savedpaymentMethod._id
-            }
-        })
+        res.status(200).json(savedpaymentMethod)
     }).catch(err=>{
         res.status(500).json({
             message:err.message
@@ -131,13 +111,7 @@ exports.update_paymentMethod=(req, res, next)=>{
     }
     
     PaymentMethodModel.update({_id:_id},paymentMethod).then(updatedpaymentMethod=>{
-        res.status(200).json({
-            paymentMethod:updatedpaymentMethod,
-            request:{
-                type:'GET',
-                url:'http://localhost:8080/paymentMethods/'+updatedpaymentMethod._id
-            }
-        })
+        res.status(200).json(updatedpaymentMethod)
     }).catch(err=>{
         res.status(500).json({
             message:err.message
@@ -149,9 +123,7 @@ exports.update_paymentMethod=(req, res, next)=>{
 exports.delete_paymentMethod=(req, res, next)=>{
     const _id = req.params._id;
     PaymentMethodModel.deleteOne({_id:_id}).then(deletedpaymentMethod=>{
-        res.status(200).json({
-            paymentMethod:deletedpaymentMethod,
-        })
+        res.status(200).json(deletedpaymentMethod)
     }).catch(err=>{
         res.status(500).json({
             message:err.message

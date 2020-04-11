@@ -15,10 +15,7 @@ exports.get_review = (req, res, next) => {
                     message:err.message
                 });
             }else{ 
-                res.status(200).json({
-                    count:review.length,
-                    review:review
-                });
+                res.status(200).json(review);
             }
         });
     } else {
@@ -32,10 +29,7 @@ exports.get_review = (req, res, next) => {
                     message:err.message
                 });
             }else{ 
-                res.status(200).json({
-                    count:reviews.length,
-                    reviews:reviews
-                });
+                res.status(200).json(reviews);
             }
         });
     }
@@ -47,10 +41,7 @@ exports.get_user_reviews_for_tasker = (req, res, next) => {
     const tasker_id = req.params._id;
     if (tasker_id) {
         ReviewModel.find({tasker:tasker_id}).select('_id description starts created').populate('user','_id firstName lastName email address gender istasker').then(reviews => {
-            return res.status(200).json({
-                count:reviews.length,
-                reviews:reviews
-            });
+            return res.status(200).json(reviews);
         }).catch(err => {
             return res.status(404).json({
                 message: 'No review data found for given tasker'
@@ -74,13 +65,7 @@ exports.add_review=(req, res, next)=>{
         starts:req.body.starts,
     });
     review.save().then(savedreview=>{
-        res.status(200).json({
-            review:savedreview,
-            request:{
-                type:'GET',
-                url:'http://localhost:8080/reviews/'+savedreview._id
-            }
-        })
+        res.status(200).json(savedreview)
     }).catch(err=>{
         res.status(500).json({
             message:err.message
@@ -99,13 +84,7 @@ exports.update_review=(req, res, next)=>{
         starts:req.body.starts,
     };
     reviewModel.update({_id:_id},review).then(updatedreview=>{
-        res.status(200).json({
-            review:updatedreview,
-            request:{
-                type:'GET',
-                url:'http://localhost:8080/reviews/'+updatedreview._id
-            }
-        })
+        res.status(200).json(updatedreview)
     }).catch(err=>{
         res.status(500).json({
             message:err.message
@@ -117,9 +96,7 @@ exports.update_review=(req, res, next)=>{
 exports.delete_review=(req, res, next)=>{
     const _id = req.params._id;
     reviewModel.deleteOne({_id:_id}).then(deletedreview=>{
-        res.status(200).json({
-            review:deletedreview,
-        })
+        res.status(200).json(deletedreview)
     }).catch(err=>{
         res.status(500).json({
             message:err.message

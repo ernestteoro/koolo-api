@@ -13,9 +13,7 @@ exports.get_program = (req, res, next) => {
                     message:err.message
                 });
             }else{ 
-                res.status(200).json({
-                    program:program
-                });
+                res.status(200).json(program);
             }
         });
     } else {
@@ -28,10 +26,7 @@ exports.get_program = (req, res, next) => {
                     message:err.message
                 });
             }else{ 
-                res.status(200).json({
-                    count:programs.length,
-                    programs:programs
-                });
+                res.status(200).json(programs);
             }
         });
         
@@ -45,15 +40,12 @@ exports.get_programs_of_user = (req, res, next) => {
     if (userid) {
         ProgramModel.find({tasker:userid}).populate("tasker","firstName lastName email address gender istasker").exec().then(programs=>{
             if(programs){
-                res.status(200).json({
-                    counts:programs.length,
-                    programs:programs
-                });
+                res.status(200).json(programs);
             }else{
-                res.status(200).
+                res.status(404).
                 json({
                      message:"No programs data found"
-                    });
+                });
             }
         }).catch(err=>{
             res.status(404).json({
@@ -62,7 +54,7 @@ exports.get_programs_of_user = (req, res, next) => {
         });
     } else {
 
-        res.status(200).
+        res.status(404).
         json({
              message:"No programs data found"
             });
@@ -83,13 +75,7 @@ exports.add_program=(req, res, next)=>{
 
     //Saving program
     program.save().then(savedprogram=>{
-        res.status(200).json({
-            program:savedprogram,
-            request:{
-                type:'GET',
-                url:'http://localhost:8080/programs/'+savedprogram._id
-            }
-        })
+        res.status(200).json(savedprogram)
     }).catch(err=>{
         res.status(500).json({
             message:err.message
@@ -107,13 +93,7 @@ exports.update_program=(req, res, next)=>{
         description:req.body.description
     };
     ProgramModel.update({_id:_id},program).then(updatedprogram=>{
-        res.status(200).json({
-            program:updatedprogram,
-            request:{
-                type:'GET',
-                url:'http://localhost:8080/programs/'+updatedprogram._id
-            }
-        })
+        res.status(200).json(updatedprogram)
     }).catch(err=>{
         res.status(500).json({
             message:err.message
@@ -125,9 +105,7 @@ exports.update_program=(req, res, next)=>{
 exports.delete_program=(req, res, next)=>{
     const _id = req.params._id;
     ProgramModel.deleteOne({_id:_id}).then(deletedprogram=>{
-        res.status(200).json({
-            program:deletedprogram,
-        })
+        res.status(200).json(deletedprogram)
     }).catch(err=>{
         res.status(500).json({
             message:err.message

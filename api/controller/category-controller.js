@@ -7,9 +7,7 @@ exports.get_all_categories =(req,res,next)=>{
     const cat_id = req.params._id;
     if(cat_id){
         CategoryModel.findById(cat_id).select('name description created').exec().then(category=>{
-            return res.status(200).json({
-                category
-            });
+            return res.status(200).json(category);
         }).catch(err=>{
             return res.status(404).json({
                 message:err.message
@@ -17,10 +15,7 @@ exports.get_all_categories =(req,res,next)=>{
         });
     }else{
         CategoryModel.find().select('name description created').exec().then(categories=>{
-            return res.status(200).json({
-                count:categories.length,
-                categories:categories
-            });
+            return res.status(200).json(categories);
         }).catch(err=>{
             return res.status(404).json({
                 message:err.message

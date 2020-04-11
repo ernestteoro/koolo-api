@@ -36,19 +36,13 @@ exports.add_person=(req,res,next)=>{
                                     person: result._id
                                 });
                                 addUser.save().then((savedUser) => {
-                                    return res.status(200).json({
-                                        message:'utilisateur cree avec sucess',
-                                        user:{
-                                            _id:savedUser._id,
-                                            login:savedUser.username,
-                                            prenom:result.firstName,
-                                            nom:result.lastName
-                                        },
-                                        request:{
-                                            type:'GET',
-                                            url:'localhost:8080/users/'+savedUser._id
-                                        }
-                                    });
+                                    const user={
+                                        _id:savedUser._id,
+                                        login:savedUser.username,
+                                        prenom:result.firstName,
+                                        nom:result.lastName
+                                    }
+                                    return res.status(200).json(user);
                                 }).catch((err) => {
                                     console.log(err);
                                     return res.status(500).json({error:'Internal error occurred'});
@@ -69,18 +63,12 @@ exports.add_person=(req,res,next)=>{
             });
         }else{
             personModel.save().then((result) => {
-                return res.status(200).json({
-                    message:'Personne creee avec sucess',
-                    person:{
-                        _id:result._id,
-                        prenom:result.firstName,
-                        nom:result.lastName
-                    },
-                    request:{
-                        type:'GET',
-                        url:'localhost:8080/persons/'+result._id
-                    }
-                });
+                const person={
+                    _id:result._id,
+                    prenom:result.firstName,
+                    nom:result.lastName
+                }
+                return res.status(200).json(person);
             });
         }
 }

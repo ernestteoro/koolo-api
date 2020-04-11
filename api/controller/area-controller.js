@@ -6,9 +6,7 @@ exports.get_area = (req, res, next) => {
     const areaId = req.params._id;
     if (areaId) {
         AreaModel.findById(areaId).select('_id name description created').populate('commun','country description').then(area => {
-            return res.status(200).json({
-                area
-            });
+            return res.status(200).json(area);
         }).catch(err => {
 
             console.log(err);
@@ -19,13 +17,7 @@ exports.get_area = (req, res, next) => {
     } else {
         AreaModel.find().select('_id name description created').populate('commun','name description').then(areas => {
             if (areas) {
-                const response = {
-                    count: areas.length,
-                    areas: areas
-                }
-                return res.status(200).json({
-                    response
-                });
+                return res.status(200).json(areas);
             } else {
                 return res.status(404).json({
                     message: 'No area data found'
@@ -49,13 +41,7 @@ exports.add_area=(req, res, next)=>{
         commun:req.body.commun
     });
     area.save().then(savedarea=>{
-        res.status(200).json({
-            area:savedarea,
-            request:{
-                type:'GET',
-                url:'http://localhost:8080/areas/'+savedarea._id
-            }
-        })
+        res.status(200).json(savedarea)
     }).catch(err=>{
         res.status(500).json({
             message:err.message
@@ -75,13 +61,7 @@ exports.update_area=(req, res, next)=>{
     };
     AreaModel.update({_id:_id},area).then(updatedarea=>{
         area._id=_id;
-        res.status(200).json({
-            area:area,
-            request:{
-                type:'GET',
-                url:'http://localhost:8080/areas/'+area._id
-            }
-        })
+        res.status(200).json(area)
     }).catch(err=>{
         res.status(500).json({
             message:err.message
@@ -93,9 +73,7 @@ exports.update_area=(req, res, next)=>{
 exports.delete_area=(req, res, next)=>{
     const _id = req.params._id;
     AreaModel.deleteOne({_id:_id}).then(deletedarea=>{
-        res.status(200).json({
-            area:deletedarea,
-        })
+        res.status(200).json(deletedarea)
     }).catch(err=>{
         res.status(500).json({
             message:err.message

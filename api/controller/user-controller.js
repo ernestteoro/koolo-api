@@ -14,47 +14,9 @@ const jwt = require('jsonwebtoken');
 // get all users
 exports.get_user = (req, res, next) => {
     const userId = req.params._id;
-
-            /*
-            db.initialize(dbName,collectionName,
-                function(dbCollection){
-                    if(userId){
-                        dbCollection.findOne({ _id:new ObjectId(userId)},{ _id : 1, firstName: 1, lastName: 1, address: 1, zipcode: 1, gender: 1, },(err, user)=>{
-                            if(err) {
-                                return response.status(404).json({
-                                    message: error.message
-                                });
-                            }
-                            return res.status(200).json({
-                                user
-                            });
-                        });
-                    }else{
-                        dbCollection.find({},{ _id : 1, firstName: 1, lastName: 1, address: 1, zipcode: 1, gender: 1, }).toArray((error, users) => {
-                            if(error) {
-                                return response.status(404).json({
-                                    message: error.message
-                                });
-                            }
-                            return res.status(200).json({
-                                users
-                            });
-                        });
-                    }
-                },
-                function(err){
-                    return res.status(404).json({
-                        message: err.message
-                    });
-                }
-            );
-            */
-
         if (userId) {
             UserModel.findById(userId).select('_id firstName lastName email address zipcode gender istasker isLogin role').then(user => {
-                return res.status(200).json({
-                    user
-                });
+                return res.status(200).json(user);
             }).catch(err => {
                 return res.status(404).json({
                     message: 'No user data found'
@@ -63,13 +25,7 @@ exports.get_user = (req, res, next) => {
         } else {
             UserModel.find().select('_id firstName lastName address email zipcode gender istasker isLogin role').then(users => {
                 if (users) {
-                    const response = {
-                        count: users.length,
-                        users: users
-                    }
-                    return res.status(200).json({
-                        response
-                    });
+                    return res.status(200).json(users);
                 } else {
                     return res.status(404).json({
                         message: 'No user data found'
@@ -123,9 +79,7 @@ exports.create_user = (userData) => {
                                             message:error.message
                                         });
                                     }
-                                    return res.status(404).json({
-                                        user
-                                    });
+                                    return res.status(404).json(user);
                                 });
                             }
                         });
@@ -141,108 +95,12 @@ exports.create_user = (userData) => {
                 });
             }
         );
-        /*
-        var createUser=null;
-        const user = UserModel.findOne({
-            email: userData.email
-        }).exec().then(user => {
-            if (!user) {
-                bcrypt.hash(userData.password,10, (err, result) => {
-                    if (err) {
-                        console.log(err);
-                        return null;
-                    }
-                    if (result) {
-                        const addUser = new UserModel({
-                            _id: new mongoose.Types.ObjectId(),
-                            username: userData.username,
-                            password: result,
-                            person: userData.person
-                        });
-                        addUser.save().then((savedUser) => {
-                            console.log(savedUser);
-                            return savedUser;
-                        }).catch((err) => {
-                            console.log(err);
-                            return null;
-                        });
-                    }
-                });
-            } else {
-                console.log("The user already exist");
-                return null;
-            }
-        }).catch(err=>{
-            console.log(err);
-        });
-        //return createUser;
-        */
     }
 }
 
 // add user
 exports.add_user = (req, res, next) => {
 
-    /*
-    db.initialize(dbName,collectionName,
-        function(dbCollection){
-
-            dbCollection.findOne({ email: req.body.email},(err, user)=>{
-                if(err) {
-                    return response.status(404).json({
-                        message: error.message
-                    });
-                }
-                if (!user) {
-                    bcrypt.hash(req.body.password,10, (err, result) => {
-                        if (err) {
-                            console.log(err);
-                            return null;
-                        }
-                        if (result) {
-                            const userData={
-                                email:req.body.email,
-                                zipcode:req.body.zipcode,
-                                firstName:req.body.firstName,
-                                lastName:req.body.lastName,
-                                address:req.body.address,
-                                gender:req.body.gender,
-                                telephone:req.body.telephone,
-                                password:result,
-                                istasker:req.body.istasker,
-                                isLogin:0
-                            }
-                            dbCollection.insertOne(userData, (error, createdUser) => {
-                                if(error) {
-                                    return response.status(500).json({
-                                        message:error.message
-                                    });
-                                }
-                                return res.status(200).json({
-                                    user:createdUser.ops
-                                });
-                            });
-                        }
-                    });
-                }else {
-                    console.log("The user already exist");
-                    return res.status(200).json({
-                        message:'The user already exist'
-                    });
-                    //return null;
-                }
-            });
-        },
-        function(err){
-            return res.status(404).json({
-                message: err.message
-            });
-        }
-    );
-    */
-
-
-    
     UserModel.findOne({
         email: req.body.email
     }).exec().then(user => {
@@ -268,13 +126,7 @@ exports.add_user = (req, res, next) => {
                         istasker:req.body.istasker
                     });
                     addUser.save().then((savedUser) => {
-                        return res.status(200).json({
-                            user:savedUser,
-                            request:{
-                                type:'GET',
-                                url:'localhost:8080/users/'+savedUser._id
-                            }
-                        });
+                        return res.status(200).json(savedUser);
                     }).catch((err) => {
                         return res.status(500).json({
                             message:err.message
@@ -370,11 +222,12 @@ exports.login = (req, res, next) => {
                         expiresIn: '1d'
                     });
 
-                    return res.status(200).json({
+                    const user={
                         email:user.email,
                         role:user.role,
                         token: token
-                    });
+                    }
+                    return res.status(200).json(user);
                 }
 
                 return res.status(401).json({

@@ -93,10 +93,7 @@ exports.get_payment_done_for_tasker = (req, res, next) => {
                     message:err.message
                 });
             }else{ 
-                res.status(200).json({
-                    count:payments.length,
-                    payments:payments
-                });
+                res.status(200).json(payments);
             }
         });
     } else {
@@ -125,13 +122,7 @@ exports.add_payment=(req, res, next)=>{
 
     //Saving payment
     payment.save().then(savedpayment=>{
-        res.status(200).json({
-            payment:savedpayment,
-            request:{
-                type:'GET',
-                url:'http://localhost:8080/payments/'+savedpayment._id
-            }
-        })
+        res.status(200).json(savedpayment)
     }).catch(err=>{
         res.status(500).json({
             message:err.message
@@ -149,13 +140,7 @@ exports.update_payment=(req, res, next)=>{
         description:req.body.description
     };
     PaymentModel.update({_id:_id},payment).then(updatedpayment=>{
-        res.status(200).json({
-            payment:updatedpayment,
-            request:{
-                type:'GET',
-                url:'http://localhost:8080/payments/'+updatedpayment._id
-            }
-        })
+        res.status(200).json(updatedpayment)
     }).catch(err=>{
         res.status(500).json({
             message:err.message
@@ -167,9 +152,7 @@ exports.update_payment=(req, res, next)=>{
 exports.delete_payment=(req, res, next)=>{
     const _id = req.params._id;
     PaymentModel.deleteOne({_id:_id}).then(deletedpayment=>{
-        res.status(200).json({
-            payment:deletedpayment,
-        })
+        res.status(200).json(deletedpayment)
     }).catch(err=>{
         res.status(500).json({
             message:err.message

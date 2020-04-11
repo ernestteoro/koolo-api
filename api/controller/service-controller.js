@@ -6,9 +6,7 @@ exports.get_service = (req, res, next) => {
     const serviceId = req.params._id;
     if (serviceId) {
         ServiceModel.findById(serviceId).select('_id name description created').populate('createdby','email istasker isLogin').then(service => {
-            return res.status(200).json({
-                service
-            });
+            return res.status(200).json(service);
         }).catch(err => {
             console.log(err);
             return res.status(404).json({
@@ -18,10 +16,7 @@ exports.get_service = (req, res, next) => {
     } else {
         ServiceModel.find().select('_id name description created').populate('createdby','firstName lastName email istasker isLogin').then(services => {
             if (services) {
-                return res.status(200).json({
-                    count: services.length,
-                    services: services
-                });
+                return res.status(200).json(services);
             } else {
                 return res.status(404).json({
                     message: 'No user data found'
@@ -47,13 +42,7 @@ exports.add_service=(req, res, next)=>{
         createdby:req.userData.userId
     });
     service.save().then(savedService=>{
-        res.status(200).json({
-            service:savedService,
-            request:{
-                type:'GET',
-                url:'http://localhost:8080/services/'+savedService._id
-            }
-        })
+        res.status(200).json(savedService)
     }).catch(err=>{
         res.status(500).json({
             message:err.message
@@ -72,13 +61,7 @@ exports.update_service=(req, res, next)=>{
         description:req.body.description,
     };
     ServiceModel.update({_id:_id},service).then(updatedService=>{
-        res.status(200).json({
-            service:updatedService,
-            request:{
-                type:'GET',
-                url:'http://localhost:8080/services/'+updatedService._id
-            }
-        })
+        res.status(200).json(updatedService)
     }).catch(err=>{
         res.status(500).json({
             message:err.message
@@ -90,9 +73,7 @@ exports.update_service=(req, res, next)=>{
 exports.delete_service=(req, res, next)=>{
     const _id = req.params._id;
     ServiceModel.deleteOne({_id:_id}).then(deletedService=>{
-        res.status(200).json({
-            service:deletedService,
-        })
+        res.status(200).json(deletedService)
     }).catch(err=>{
         res.status(500).json({
             message:err.message
