@@ -50,12 +50,14 @@ exports.get_provide_by_service = (req, res, next) => {
             }else{ 
 
                 if(provides){
+                    /*
                     var users=[];
                     provides.forEach(provide=>{
                         users.push(provide.tasker);
                     });
-                    
-                    return res.status(200).json(users);
+                    */
+
+                    return res.status(200).json(provides);
                 }else{
                     return res.status(404).json({
                         message:"No service provider data found"
