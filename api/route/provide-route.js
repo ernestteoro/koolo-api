@@ -8,6 +8,7 @@ const route = express.Router();
 route.get('/',provideController.get_provide);
 route.get('/:_id',provideController.get_provide);
 route.get('/tasker/:_id',provideController.get_provide_by_tasker);
+route.get('/service/taskers/:_id',provideController.get_provide_by_service);
 route.post('/',authCheck,provideController.add_provide);
 route.patch('/:_id',authCheck,provideController.update_provide);
 route.delete('/:_id',authCheck,provideController.delete_provide);

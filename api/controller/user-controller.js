@@ -40,6 +40,26 @@ exports.get_user = (req, res, next) => {
         }
 }
 
+
+// get all users that provide services
+exports.get_tasker_users = (req, res, next) => {
+    const _istasker = req.params._id;
+        if (_istasker) {
+            UserModel.find({istasker:_istasker}).select('_id firstName lastName email address zipcode gender istasker isLogin role').then(user => {
+                return res.status(200).json(user);
+            }).catch(err => {
+                return res.status(404).json({
+                    message: 'No user data found'
+                });
+            });
+        } else {
+            return res.status(404).json({
+                message: 'No user data found'
+            });
+        }
+}
+
+
 // method to signup a user
 exports.create_user = (userData) => {
     if (!userData) {

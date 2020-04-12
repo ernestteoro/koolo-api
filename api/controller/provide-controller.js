@@ -35,6 +35,44 @@ exports.get_provide = (req, res, next) => {
     }
 }
 
+// get provides received by a tasker using his id
+exports.get_provide_by_service = (req, res, next) => {
+    const service_id = req.params._id;
+    if (service_id) {
+        provideModel.find({service:service_id}).
+        populate("tasker","_id firstName lastName email address gender istasker ").
+        populate("service","_id name description ").
+        exec(function(err,provides){
+            if(err){
+                res.status(404).json({
+                    message:err.message
+                });
+            }else{ 
+
+                if(provides){
+                    var users=[];
+                    provides.forEach(provide=>{
+                        users.push(provide.tasker);
+                    });
+                    
+                    return res.status(200).json(users);
+                }else{
+                    return res.status(404).json({
+                        message:"No service provider data found"
+                    })
+                }
+                
+            }
+        });
+    } else {
+
+        res.status(404).
+        json({
+             message:"No provides data found"
+            });
+    }
+}
+
 
 // get provides received by a tasker using his id
 exports.get_provide_by_tasker = (req, res, next) => {
@@ -45,19 +83,18 @@ exports.get_provide_by_tasker = (req, res, next) => {
         populate("service","_id name description ").
         exec(function(err,provides){
             if(err){
-                res.status(404).json({
+                return res.status(404).json({
                     message:err.message
                 });
             }else{ 
-                res.status(200).json(provides);
+                return res.status(200).json(provides);
             }
         });
     } else {
 
-        res.status(404).
-        json({
+        return res.status(404).json({
              message:"No provides data found"
-            });
+        });
     }
 }
 
@@ -76,9 +113,9 @@ exports.add_provide=(req, res, next)=>{
 
     //Saving provides
     provide.save().then(savedprovide=>{
-        res.status(200).json(savedprovide)
+        return res.status(200).json(savedprovide)
     }).catch(err=>{
-        res.status(500).json({
+        return res.status(500).json({
             message:err.message
         });
     });
