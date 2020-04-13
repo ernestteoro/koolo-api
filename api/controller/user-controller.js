@@ -155,7 +155,6 @@ exports.add_user = (req, res, next) => {
                 }
             });
         } else {
-            console.log("The user already exist");
             return res.status(500).json({
                 message:"The user already exists"
             });
@@ -171,70 +170,23 @@ exports.delete_user = (req, res, next) => {
 
 // User login
 exports.login = (req, res, next) => {
-
-    /*
-    db.initialize(dbName,collectionName,
-        function(dbCollection){
-            dbCollection.findOne({ email: req.body.email},(err, user)=>{
-                if(err) {
-                    return response.status(404).json({
-                        message: error.message
-                    });
-                }
-                if (user) {
-                    bcrypt.compare(req.body.password, user.password, (err, result) => {
-                        if (err) {
-                            console.log(err)
-                            return res.status(401).json({
-                                message: err.message
-                            })
-                        }
-                        if (result) {
-                            token = jwt.sign({
-                                username: user.email,
-                                userId: user._id
-                            }, 'secret', {
-                                expiresIn: '1d'
-                            });
-
-                            return res.status(200).json({
-                                email:user.email,
-                                role:user.role,
-                                token: token
-                            });
-                        }
-
-                        return res.status(401).json({
-                            message: 'Not authorized'
-                        }); 
-                    });
-                }else{
-                    return res.status(401).json({
-                        message: "Not authorized"
-                    });
-                }
-            });
-        },function(err){
-            return res.status(404).json({
-                message: err.message
-            });
-        }
-    );
-    */
-
-    
     UserModel.findOne({
         email: req.body.email
     }).then(user => {
-        if (user) {
+        if (usr) {
+            const user = usr;
+            console.log("User before hashing password")
+            console.log(usr);
             bcrypt.compare(req.body.password, user.password, (err, result) => {
                 if (err) {
                     console.log(err)
                     return res.status(401).json({
                         message: 'Not authorized'
-                    })
+                    });
                 }
                 if (result) {
+                    console.log("User after hashing passwor")
+                    console.log(user)
                     token = jwt.sign({
                         username: user.email,
                         userId: user._id
