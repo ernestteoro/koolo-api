@@ -172,7 +172,7 @@ exports.delete_user = (req, res, next) => {
 exports.login = (req, res, next) => {
     UserModel.findOne({
         email: req.body.email
-    }).then(user => {
+    }).then(usr => {
         if (usr) {
             const user = usr;
             console.log("User before hashing password")
