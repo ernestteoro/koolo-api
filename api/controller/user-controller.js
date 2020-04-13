@@ -174,10 +174,10 @@ exports.login = (req, res, next) => {
         email: req.body.email
     }).then(usr => {
         if (usr) {
-            const user = usr;
+            //const user = usr;
             console.log("User before hashing password")
             console.log(usr);
-            bcrypt.compare(req.body.password, user.password, (err, result) => {
+            bcrypt.compare(req.body.password, usr.password, (err, result) => {
                 if (err) {
                     console.log(err)
                     return res.status(401).json({
@@ -186,17 +186,17 @@ exports.login = (req, res, next) => {
                 }
                 if (result) {
                     console.log("User after hashing passwor")
-                    console.log(user)
+                    console.log(usr)
                     token = jwt.sign({
-                        username: user.email,
-                        userId: user._id
+                        username: usr.email,
+                        userId: usr._id
                     }, 'secret', {
                         expiresIn: '1d'
                     });
 
                     const user={
-                        email:user.email,
-                        role:user.role,
+                        email:usr.email,
+                        role:usr.role,
                         token: token
                     }
                     return res.status(200).json(user);
