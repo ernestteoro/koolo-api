@@ -121,6 +121,10 @@ exports.create_user = (userData) => {
 // add user
 exports.add_user = (req, res, next) => {
 
+    console.log("Request body ")
+
+    console.log(req.body)
+
     UserModel.findOne({
         email: req.body.email
     }).exec().then(user => {
