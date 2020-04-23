@@ -15,15 +15,32 @@ const jwt = require('jsonwebtoken');
 exports.get_user = (req, res, next) => {
     const userId = req.params._id;
         if (userId) {
-            UserModel.findById(userId).select('_id firstName lastName email address zipcode gender istasker isLogin role').then(user => {
+            UserModel.findById(userId)
+            .select('_id firstName lastName email address zipcode gender istasker isLogin role')
+            .populate("area","_id name description")
+            .populate("service","_id name description ")
+            .exec(function(err,user){
+                if(err){
+                    return res.status(404).json({
+                        message: 'No user data found'
+                    });
+                }
                 return res.status(200).json(user);
-            }).catch(err => {
-                return res.status(404).json({
-                    message: 'No user data found'
-                });
             });
         } else {
-            UserModel.find().select('_id firstName lastName address email zipcode gender istasker isLogin role').then(users => {
+            UserModel.find().select('_id firstName lastName address email zipcode gender istasker isLogin role')
+            .populate("area","_id name description")
+            .populate("service","_id name description ")
+            .exec(function(err,users){
+                if(err){
+                    return res.status(404).json({
+                        message: 'No user data found'
+                    });
+                }
+                return res.status(200).json(users);
+            });
+            /*
+            .then(users => {
                 if (users) {
                     return res.status(200).json(users);
                 } else {
@@ -36,6 +53,7 @@ exports.get_user = (req, res, next) => {
                     message: err.message
                 });
             });
+            */
             
         }
 }
@@ -45,13 +63,27 @@ exports.get_user = (req, res, next) => {
 exports.get_tasker_users = (req, res, next) => {
     const _istasker = req.params._id;
         if (_istasker) {
-            UserModel.find({istasker:_istasker}).select('_id firstName lastName email address zipcode gender istasker isLogin role').then(user => {
+            UserModel.find({istasker:_istasker})
+            .select('_id firstName lastName email address zipcode gender istasker isLogin role')
+            .populate("area","_id name description")
+            .populate("service","_id name description ")
+            .exec(function(err,user){
+                if(err){
+                    return res.status(404).json({
+                        message: 'No user data found'
+                    });
+                }
+                return res.status(200).json(user);
+            });
+            
+            /*.then(user => {
                 return res.status(200).json(user);
             }).catch(err => {
                 return res.status(404).json({
                     message: 'No user data found'
                 });
             });
+            */
         } else {
             return res.status(404).json({
                 message: 'No user data found'
@@ -151,14 +183,21 @@ exports.add_user = (req, res, next) => {
                         service:(req.body.service!=null)?req.body.service._id:null
                     });
 
-                    /*
-                    if(req.body.service!=null){
-                        addUser.service=req.body.service._id
-                    }
-                    */
-
                     addUser.save().then((savedUser) => {
-                        return res.status(200).json(savedUser);
+
+                        UserModel.findById(savedUser._id)
+                        .select('_id firstName lastName email address zipcode gender istasker isLogin role')
+                        .populate("area","_id name description")
+                        .populate("service","_id name description ")
+                        .exec(function(err,user){
+                            if(err){
+                                return res.status(404).json({
+                                     message: 'No user data found'
+                                });
+                            }
+                            return res.status(200).json(user);
+                        });
+                        //return res.status(200).json();
                     }).catch((err) => {
                         return res.status(500).json({
                             message:err.message
