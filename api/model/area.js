@@ -17,7 +17,7 @@ const areaSchema = mongoose.Schema({
     },
     commun:{
         type:mongoose.Schema.Types.ObjectId,
-        ref:'Commun',
+        ref:'Communs',
         require:true
     }
 });

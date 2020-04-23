@@ -143,8 +143,14 @@ exports.add_user = (req, res, next) => {
                         gender:req.body.gender,
                         telephone:req.body.telephone,
                         password:result,
-                        istasker:req.body.istasker
+                        istasker:req.body.istasker,
+                        area:req.body.area.id
                     });
+
+                    if(req.body.service){
+                        addUser.service=req.body.service.id
+                    }
+
                     addUser.save().then((savedUser) => {
                         return res.status(200).json(savedUser);
                     }).catch((err) => {

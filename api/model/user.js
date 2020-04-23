@@ -51,6 +51,16 @@ const userSchema = mongoose.Schema({
         require:true,
         default:'user'
     },
+    service:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'Service',
+        require:false
+    },
+    area:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'Areas',
+        require:false
+    },
     created:{
         type:Date,
         require:true,
