@@ -122,7 +122,6 @@ exports.create_user = (userData) => {
 exports.add_user = (req, res, next) => {
 
     console.log("Request body ")
-
     console.log(req.body)
 
     UserModel.findOne({
@@ -148,12 +147,15 @@ exports.add_user = (req, res, next) => {
                         telephone:req.body.telephone,
                         password:result,
                         istasker:req.body.istasker,
-                        area:req.body.area.id
+                        area:req.body.area._id,
+                        service:(req.body.service!=null)?req.body.service._id:null
                     });
 
-                    if(req.body.service){
-                        addUser.service=req.body.service.id
+                    /*
+                    if(req.body.service!=null){
+                        addUser.service=req.body.service._id
                     }
+                    */
 
                     addUser.save().then((savedUser) => {
                         return res.status(200).json(savedUser);
