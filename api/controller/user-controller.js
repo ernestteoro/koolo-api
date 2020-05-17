@@ -39,22 +39,6 @@ exports.get_user = (req, res, next) => {
                 }
                 return res.status(200).json(users);
             });
-            /*
-            .then(users => {
-                if (users) {
-                    return res.status(200).json(users);
-                } else {
-                    return res.status(404).json({
-                        message: 'No user data found'
-                    });
-                }
-            }).catch(err => {
-                return res.status(404).json({
-                    message: err.message
-                });
-            });
-            */
-            
         }
 }
 
@@ -76,14 +60,6 @@ exports.get_tasker_users = (req, res, next) => {
                 return res.status(200).json(user);
             });
             
-            /*.then(user => {
-                return res.status(200).json(user);
-            }).catch(err => {
-                return res.status(404).json({
-                    message: 'No user data found'
-                });
-            });
-            */
         } else {
             return res.status(404).json({
                 message: 'No user data found'
@@ -184,7 +160,6 @@ exports.add_user = (req, res, next) => {
                     });
 
                     addUser.save().then((savedUser) => {
-
                         UserModel.findById(savedUser._id)
                         .select('_id firstName lastName email address zipcode gender istasker isLogin role')
                         .populate("area","_id name description")
