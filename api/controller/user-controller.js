@@ -363,7 +363,7 @@ exports.login = (req, res, next) => {
                         _id: usr._id,
                         token: loginToken
                     }
-
+                    
                     return res.status(200).json({
                         userToken: loginToken,
                         email: usr.email,
@@ -394,7 +394,7 @@ exports.login = (req, res, next) => {
 // upload user profile picture
 exports.uploadUserProfilePicture = (req,res,next) => {
     console.log(req.file)
-    
+
     if(req._id){
         UserModel.findById(req.body._id)
         .select('_id firstName lastName email telephone gender istasker isLogin role')

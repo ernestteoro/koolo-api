@@ -15,11 +15,3 @@ route.post('/login',userController.login);
 route.post('/upload',uploads.single('image'),checkAuth,userController.uploadUserProfilePicture)
 
 module.exports=route;
-/*
-  npm uninstall bcrypt
-  sudo npm i bcrypt
-  pm2 start server.js
-  pm2 startup 
-  pm2 save 
-  pm2 list
-*/

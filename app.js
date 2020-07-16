@@ -101,3 +101,13 @@ app.use((req,res,next)=>{
 
 
 module.exports = app;
+
+
+/*
+  npm uninstall bcrypt
+  sudo npm i bcrypt
+  pm2 start server.js
+  pm2 startup 
+  pm2 save 
+  pm2 lists
+*/
