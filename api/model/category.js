@@ -6,10 +6,18 @@ const categorySchema= mongoose.Schema({
         type:String,
         require:true
     },
+    
     description:{
         type:String,
         require:true
     },
+
+    country:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"countries",
+        require:true
+    },
+    
     created:{
         type:Date,
         require:true,

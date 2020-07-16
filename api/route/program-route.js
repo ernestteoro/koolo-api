@@ -7,7 +7,7 @@ const route = express.Router();
 
 route.get('/',programController.get_program);
 route.get('/:_id',programController.get_program);
-route.get('/user/:_id',programController.get_programs_of_user);
+route.get('/:_id/user',programController.get_programs_of_user);
 route.post('/',authCheck,programController.add_program);
 route.patch('/:_id',authCheck,programController.update_program);
 route.delete('/:_id',authCheck,programController.delete_program);

@@ -6,7 +6,12 @@ const SubCategory = require('../model/subCategory');
 exports.get_all_subcategories =(req,res,next)=>{
     const cat_id = req.params._id;
     if(cat_id){
-        SubCategory.findById(cat_id).select('_id name description created').exec().then(subcategories=>{
+        SubCategory
+        .findById(cat_id)
+        .select('_id name description created')
+        .populate("category","name description")
+        .exec()
+        .then(subcategories=>{
             return res.status(200).json(subcategories);
         }).catch(err=>{
             return res.status(404).json({
@@ -14,7 +19,12 @@ exports.get_all_subcategories =(req,res,next)=>{
             });
         });
     }else{
-        SubCategory.find().select('_id name description created').exec().then(subcategories=>{
+        SubCategory
+        .find()
+        .select('_id name description created')
+        .populate("category","name description")
+        .exec()
+        .then(subcategories=>{
             return res.status(200).json(subcategories);
         }).catch(err=>{
             return res.status(404).json({
@@ -84,7 +94,12 @@ exports.update_subcategory =(req,res,next)=>{
 // Method to fetch subcategories using category id
 exports.get_all_subcategories_of_category=(req,res,next)=>{
     const _idCat = req.params._id;
-    SubCategory.find({category:req.params._id}).select('_id name description created').exec().then(subcategories=>{
+    SubCategory
+    .find({category:req.params._id})
+    .select('_id name description created')
+    .populate("category","name description")
+    .exec()
+    .then(subcategories=>{
         return res.status(200).json(subcategories);
     }).catch(err=>{
         return res.status(404).json({

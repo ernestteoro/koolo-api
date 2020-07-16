@@ -39,10 +39,10 @@ exports.get_provide = (req, res, next) => {
 exports.get_provide_by_service = (req, res, next) => {
     const service_id = req.params._id;
     if (service_id) {
-        provideModel.find({service:service_id}).
-        populate("tasker","_id firstName lastName email address gender istasker ").
-        populate("service","_id name description ").
-        exec(function(err,provides){
+        provideModel.find({service:service_id})
+        .populate("tasker","_id firstName lastName email address gender istasker ")
+        .populate("service","_id name description ")
+        .exec(function(err,provides){
             if(err){
                 res.status(404).json({
                     message:err.message

@@ -5,7 +5,8 @@ const CountryModel = require('../model/country');
 exports.get_country = (req, res, next) => {
     const countryId = req.params._id;
     if (countryId) {
-        CountryModel.findById(countryId).select('_id name description created').populate('createdby','email istasker isLogin').then(country => {
+        CountryModel.findById(countryId).select('_id name description created')
+        .then(country => {
             return res.status(200).json(country);
         }).catch(err => {
             return res.status(404).json({
@@ -13,7 +14,8 @@ exports.get_country = (req, res, next) => {
             });
         });
     } else {
-        CountryModel.find().select('_id name description created').populate('createdby','email istasker isLogin').then(countries => {
+        CountryModel.find().select('_id name description created')
+        .then(countries => {
             if (countries) {
                 return res.status(200).json(countries);
             } else {

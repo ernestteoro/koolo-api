@@ -5,7 +5,10 @@ const ServiceModel = require('../model/service');
 exports.get_service = (req, res, next) => {
     const serviceId = req.params._id;
     if (serviceId) {
-        ServiceModel.findById(serviceId).select('_id name description created').populate('createdby','email istasker isLogin').then(service => {
+        ServiceModel
+        .findById(serviceId)
+        .select('_id name description created')
+        .then(service => {
             return res.status(200).json(service);
         }).catch(err => {
             console.log(err);
@@ -14,7 +17,10 @@ exports.get_service = (req, res, next) => {
             });
         }); 
     } else {
-        ServiceModel.find().select('_id name description created').populate('createdby','firstName lastName email istasker isLogin').then(services => {
+        ServiceModel
+        .find()
+        .select('_id name description created')
+        .then(services => {
             if (services) {
                 return res.status(200).json(services);
             } else {
@@ -37,7 +43,10 @@ exports.get_service = (req, res, next) => {
 exports.get_service_of_subcategory = (req, res, next) => {
     const subcategory_id = req.params._id;
     if (subcategory_id) {
-        ServiceModel.find({subcategory:subcategory_id}).select('_id name description created').then(services => {
+        ServiceModel
+        .find({subcategory:subcategory_id})
+        .select('_id name description created')
+        .then(services => {
             return res.status(200).json(services);
         }).catch(err => {
             console.log(err);
@@ -46,7 +55,9 @@ exports.get_service_of_subcategory = (req, res, next) => {
             });
         }); 
     } else {
-        ServiceModel.find().select('_id name description created').then(services => {
+        ServiceModel.find()
+        .select('_id name description created')
+        .then(services => {
             if (services) {
                 return res.status(200).json(services);
             } else {
@@ -66,12 +77,10 @@ exports.get_service_of_subcategory = (req, res, next) => {
 
 // Method to add a service
 exports.add_service=(req, res, next)=>{
-    console.log("User id for creating a service "+req.userData.userId);
     const service = new ServiceModel({
         _id:new mongoose.Types.ObjectId(),
         name:req.body.name,
         description:req.body.description,
-        createdby:req.userData.userId
     });
     service.save().then(savedService=>{
         res.status(200).json(savedService)

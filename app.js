@@ -31,6 +31,8 @@ mongo.connect('mongodb://localhost/eservice',{
     useCreateIndex:true
 });
 */
+
+
 mongo.connect('mongodb+srv://eservice:admin@cluster0-jotbb.mongodb.net/eservice?retryWrites=true&w=majority',{
     useNewUrlParser:true,
     useUnifiedTopology: true,
@@ -38,13 +40,15 @@ mongo.connect('mongodb+srv://eservice:admin@cluster0-jotbb.mongodb.net/eservice?
     useCreateIndex: true
 });
 
-
 app.disable('etag');
 
 app.use(morgan('dev'));
 
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
+
+// file upload management
+app.use('/api/profile',express.static('/api/profile'));
 
 app.use((req, res, next)=>{
     res.header("Access-Control-Allow-Origin","*");
@@ -92,5 +96,8 @@ app.use((req,res,next)=>{
         }
     });
 });
+
+
+
 
 module.exports = app;

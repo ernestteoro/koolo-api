@@ -38,7 +38,7 @@ const userSchema = mongoose.Schema({
         require:true
     },
     telephone:{
-        type:Number,
+        type:String,
         require:true,
         match:/^\d{9}$/
     },
