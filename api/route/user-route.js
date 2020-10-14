@@ -12,6 +12,7 @@ route.patch('/update/',authCheck,userController.update_user);
 route.patch('/update/service',authCheck,userController.update_user_service);
 route.post('/signup',userController.add_user);
 route.post('/login',userController.login);
-route.post('/upload',uploads.single('image'),authCheck,userController.uploadUserProfilePicture)
+route.post('/upload/:_id',uploads.single('image'),authCheck,userController.uploadUserProfilePicture)
+route.get('/profile/image/:_id',userController.displayUserProfileImage);
 
 module.exports=route;

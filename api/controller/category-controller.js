@@ -74,7 +74,7 @@ exports.update_category =(req,res,next)=>{
             country:body.country._id,
             description:req.body.description
         });
-        category.update({_id:req.body._id}).then(updatedCategory=>{
+        category.update({_id:req.params._id}).then(updatedCategory=>{
             res.status(200).json(updatedCategory);
         }).catch(err=>{
             res.status(500).json({

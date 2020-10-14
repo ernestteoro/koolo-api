@@ -16,7 +16,7 @@ const communSchema = mongoose.Schema({
     },
     country:{
         type:mongoose.Schema.Types.ObjectId,
-        ref:'Country',
+        ref:'countries',
         require:true
     }
 });

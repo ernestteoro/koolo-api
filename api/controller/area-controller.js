@@ -5,17 +5,23 @@ const AreaModel = require('../model/area');
 exports.get_area = (req, res, next) => {
     const areaId = req.params._id;
     if (areaId) {
-        AreaModel.findById(areaId).select('_id name description created').populate('commun','country description').then(area => {
+        AreaModel
+        .findById(areaId)
+        .select('_id name description created')
+        .populate('commun','name description')
+        .then(area => {
             return res.status(200).json(area);
         }).catch(err => {
-
-            console.log(err);
             return res.status(404).json({
                 message: 'No area data found with id'
             });
         });
     } else {
-        AreaModel.find().select('_id name description created').populate('commun','name description').then(areas => {
+        AreaModel
+        .find()
+        .select('_id name description created')
+        .populate('commun','name description')
+        .then(areas => {
             if (areas) {
                 return res.status(200).json(areas);
             } else {
@@ -41,7 +47,20 @@ exports.add_area=(req, res, next)=>{
         commun:req.body.commun
     });
     area.save().then(savedarea=>{
-        res.status(200).json(savedarea)
+
+        AreaModel
+        .findById(savedarea._id)
+        .select('_id name description created')
+        .populate('commun','name description')
+        .then(area => {
+            return res.status(200).json(area);
+        }).catch(err => {
+            return res.status(404).json({
+                message: 'No area data found with id'
+            });
+        });
+
+        //res.status(200).json(savedarea)
     }).catch(err=>{
         res.status(500).json({
             message:err.message

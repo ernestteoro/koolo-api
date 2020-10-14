@@ -2,6 +2,9 @@ const express = require('express');
 const morgan = require('morgan');
 const mongo  = require('mongoose');
 const bodyParser = require('body-parser');
+//var path = require('path');
+
+const path = require('path');
 
 
 // importing api routes
@@ -24,27 +27,36 @@ const subCategoryRoute = require('./api/route/subCategory-route');
 
 const app = express();
 
-/*
 mongo.connect('mongodb://localhost/eservice',{
     useNewUrlParser:true,
     useUnifiedTopology:true,
     useCreateIndex:true
 });
-*/
 
 
+/*
 mongo.connect('mongodb+srv://eservice:admin@cluster0-jotbb.mongodb.net/eservice?retryWrites=true&w=majority',{
     useNewUrlParser:true,
     useUnifiedTopology: true,
     useFindAndModify: false,
     useCreateIndex: true
 });
+*/
+
+
+var dir = path.join(__dirname, 'api/profile/');
+
+console.log(" Base URL"+dir);
+
+app.use(express.static(dir));
 
 app.disable('etag');
 
 app.use(morgan('dev'));
 
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({
+    extended: true,
+}));
 app.use(bodyParser.json());
 
 // file upload management

@@ -21,19 +21,11 @@ const userSchema = mongoose.Schema({
         require:true,
         default:false
     },
-    zipcode:{
-        type:String,
-        require:true
-    },
     firstName:{
         type:String,
         require:true
     },
     lastName:{
-        type:String,
-        require:true
-    },
-    address:{
         type:String,
         require:true
     },
@@ -60,6 +52,9 @@ const userSchema = mongoose.Schema({
         type:mongoose.Schema.Types.ObjectId,
         ref:'Areas',
         require:false
+    },
+    image:{
+        type:String,
     },
     created:{
         type:Date,

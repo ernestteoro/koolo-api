@@ -8,6 +8,7 @@ exports.get_service = (req, res, next) => {
         ServiceModel
         .findById(serviceId)
         .select('_id name description created')
+        .populate("subcategory","name description")
         .then(service => {
             return res.status(200).json(service);
         }).catch(err => {
@@ -20,6 +21,7 @@ exports.get_service = (req, res, next) => {
         ServiceModel
         .find()
         .select('_id name description created')
+        .populate("subcategory","name description")
         .then(services => {
             if (services) {
                 return res.status(200).json(services);
@@ -46,6 +48,7 @@ exports.get_service_of_subcategory = (req, res, next) => {
         ServiceModel
         .find({subcategory:subcategory_id})
         .select('_id name description created')
+        .populate("subcategory","name description")
         .then(services => {
             return res.status(200).json(services);
         }).catch(err => {
@@ -57,6 +60,7 @@ exports.get_service_of_subcategory = (req, res, next) => {
     } else {
         ServiceModel.find()
         .select('_id name description created')
+        .populate("subcategory","name description")
         .then(services => {
             if (services) {
                 return res.status(200).json(services);
@@ -81,6 +85,7 @@ exports.add_service=(req, res, next)=>{
         _id:new mongoose.Types.ObjectId(),
         name:req.body.name,
         description:req.body.description,
+        subcategory:req.body.subCategory._id
     });
     service.save().then(savedService=>{
         res.status(200).json(savedService)

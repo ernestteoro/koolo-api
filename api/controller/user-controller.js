@@ -5,6 +5,8 @@ const PersonModel = require('../model/person')
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
+const path = require('path');
+
 // get all users
 exports.get_user = (req, res, next) => {
     const userId = req.params._id;
@@ -157,7 +159,6 @@ exports.add_user = (req, res, next) => {
         if (!user) {
             bcrypt.hash(req.body.password, 10, (err, result) => {
                 if (err) {
-                    console.log(err);
                     return res.status(500).json({
                         message: err.message
                     });
@@ -344,7 +345,6 @@ exports.login = (req, res, next) => {
             //const user = usr;
             bcrypt.compare(req.body.password, usr.password, (err, result) => {
                 if (err) {
-                    console.log(err)
                     return res.status(401).json({
                         message: 'Not authorized'
                     });
@@ -393,10 +393,9 @@ exports.login = (req, res, next) => {
 
 // upload user profile picture
 exports.uploadUserProfilePicture = (req,res,next) => {
-    console.log(req.file)
-
-    if(req._id){
-        UserModel.findById(req.body._id)
+    
+    if(req.params._id && req.file){
+        UserModel.findById(req.params._id)
         .select('_id firstName lastName email telephone gender istasker isLogin role')
         .populate("area", "_id name description")
         .populate("service", "_id name description created")
@@ -415,6 +414,7 @@ exports.uploadUserProfilePicture = (req,res,next) => {
             }).then((updateOk) => {
                 return res.status(200).json(user);
             }).catch((err) => {
+                console.log(err)
                 return res.status(500).json(err.message);
             });
         });
@@ -423,4 +423,9 @@ exports.uploadUserProfilePicture = (req,res,next) => {
             message: 'No user data found'
         });
     }
+}
+
+exports.displayUserProfileImage = (req,res,next)=>{
+    var dir = path.join(path.dirname(require.main.filename), 'api/profile/');
+    res.sendFile(path.join(dir,`${req.params._id}.jpeg`));
 }
